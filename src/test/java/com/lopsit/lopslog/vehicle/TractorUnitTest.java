@@ -1,0 +1,63 @@
+package com.lopsit.lopslog.vehicle;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+import org.junit.jupiter.api.Test;
+
+class TractorUnitTest {
+
+  @Test
+  void create() {
+    // invalid company id
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> TractorUnit.create(null, new LicensePlate("OEC5E12")));
+    // invalid license plate
+    assertThrows(IllegalArgumentException.class, () -> TractorUnit.create(UUID.randomUUID(), null));
+  }
+
+  @Test
+  void reconstitute() {
+    LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
+    LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
+    LicensePlate licensePlate = new LicensePlate("OEC5E12");
+    // invalid id
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> TractorUnit.reconstitute(null, UUID.randomUUID(), licensePlate, pastDate, pastDate));
+    // invalid company id
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> TractorUnit.reconstitute(UUID.randomUUID(), null, licensePlate, pastDate, pastDate));
+    // invalid license plate
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(), UUID.randomUUID(), null, pastDate, pastDate));
+    // invalid created at
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(), UUID.randomUUID(), licensePlate, null, pastDate));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(), UUID.randomUUID(), licensePlate, futureDate, pastDate));
+    // invalid updated at
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(), UUID.randomUUID(), licensePlate, pastDate, null));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(), UUID.randomUUID(), licensePlate, pastDate, futureDate));
+  }
+}
