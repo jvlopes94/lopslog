@@ -1,3 +1,3 @@
 package com.lopsit.lopslog.driver;
 
-public class Cpf {}
+public class Cpf {} // TODO
