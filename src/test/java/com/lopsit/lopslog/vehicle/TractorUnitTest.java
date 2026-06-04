@@ -59,5 +59,14 @@ class TractorUnitTest {
         () ->
             TractorUnit.reconstitute(
                 UUID.randomUUID(), UUID.randomUUID(), licensePlate, pastDate, futureDate));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            TractorUnit.reconstitute(
+                UUID.randomUUID(),
+                UUID.randomUUID(),
+                licensePlate,
+                pastDate,
+                LocalDateTime.now().minusDays(45L)));
   }
 }

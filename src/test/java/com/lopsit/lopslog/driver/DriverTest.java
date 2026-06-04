@@ -56,5 +56,16 @@ class DriverTest {
     assertThrows(
         IllegalArgumentException.class,
         () -> Driver.reconstitute(randomId, "name", cnh, cpf, randomId, pastDate, futureDate));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            Driver.reconstitute(
+                randomId,
+                "name",
+                cnh,
+                cpf,
+                randomId,
+                pastDate,
+                LocalDateTime.now().minusDays(45L)));
   }
 }
