@@ -7,12 +7,15 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class DriverTest {
+  private static final Cnh cnh = new Cnh();
+  private static final Cpf cpf = new Cpf();
+  private static final UUID randomId = UUID.randomUUID();
+  private static final UUID companyId = UUID.randomUUID();
+  private static final LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
+  private static final LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
 
   @Test
   void create() {
-    Cnh cnh = new Cnh();
-    Cpf cpf = new Cpf();
-    UUID companyId = UUID.randomUUID();
     // invalid name
     assertThrows(IllegalArgumentException.class, () -> Driver.create(null, cnh, cpf, companyId));
     assertThrows(IllegalArgumentException.class, () -> Driver.create("", cnh, cpf, companyId));
@@ -22,11 +25,6 @@ class DriverTest {
 
   @Test
   void reconstitute() {
-    Cnh cnh = new Cnh();
-    Cpf cpf = new Cpf();
-    UUID randomId = UUID.randomUUID();
-    LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
-    LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
     // invalid id
     assertThrows(
         IllegalArgumentException.class,
