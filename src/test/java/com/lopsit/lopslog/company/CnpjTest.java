@@ -18,7 +18,7 @@ class CnpjTest {
     @ParameterizedTest
     @ValueSource(strings = {"45174649000167", "98599267000141", "36613826000173"})
     @DisplayName("Should accept valid CNPJs")
-    void shouldAcceptValidLegacyFormat(String input) {
+    void shouldAcceptValidFormat(String input) {
       Cnpj cnpj = new Cnpj(input);
       assertNotNull(cnpj);
     }
