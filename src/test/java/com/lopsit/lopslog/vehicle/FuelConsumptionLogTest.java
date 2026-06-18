@@ -1,5 +1,6 @@
 package com.lopsit.lopslog.vehicle;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
@@ -13,6 +14,19 @@ class FuelConsumptionLogTest {
   void create() {
     LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
     LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
+    // valid fuel consumption log
+    FuelConsumptionLog log =
+        FuelConsumptionLog.create(
+            null,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            pastDate,
+            null,
+            LoadStatus.LOADED,
+            100,
+            BigDecimal.TEN,
+            100000);
+    assertNotNull(log);
     // invalid tractor unit id
     assertThrows(
         IllegalArgumentException.class,
@@ -222,6 +236,21 @@ class FuelConsumptionLogTest {
   void reconstitute() {
     LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
     LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
+    // valid fuel consumption log
+    FuelConsumptionLog log =
+        FuelConsumptionLog.reconstitute(
+            UUID.randomUUID(),
+            null,
+            UUID.randomUUID(),
+            UUID.randomUUID(),
+            pastDate,
+            "description",
+            LoadStatus.LOADED,
+            100,
+            BigDecimal.TEN,
+            100000,
+            pastDate);
+    assertNotNull(log);
     // invalid id
     assertThrows(
         IllegalArgumentException.class,

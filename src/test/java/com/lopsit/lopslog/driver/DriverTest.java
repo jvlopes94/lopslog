@@ -16,6 +16,9 @@ class DriverTest {
 
   @Test
   void create() {
+    // valid driver
+    Driver driver = Driver.create("name", cnh, cpf, companyId);
+    assertNotNull(driver);
     // invalid name
     assertThrows(IllegalArgumentException.class, () -> Driver.create(null, cnh, cpf, companyId));
     assertThrows(IllegalArgumentException.class, () -> Driver.create("", cnh, cpf, companyId));
@@ -25,6 +28,9 @@ class DriverTest {
 
   @Test
   void reconstitute() {
+    // valid driver
+    Driver driver = Driver.reconstitute(randomId, "name", cnh, cpf, companyId, pastDate, pastDate);
+    assertNotNull(driver);
     // invalid id
     assertThrows(
         IllegalArgumentException.class,

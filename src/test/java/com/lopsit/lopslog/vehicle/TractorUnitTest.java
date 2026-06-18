@@ -1,5 +1,6 @@
 package com.lopsit.lopslog.vehicle;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,9 @@ class TractorUnitTest {
 
   @Test
   void create() {
+    // valid tractor unit
+    TractorUnit tractorUnit = TractorUnit.create(UUID.randomUUID(), new LicensePlate("OEC5E12"));
+    assertNotNull(tractorUnit);
     // invalid company id
     assertThrows(
         IllegalArgumentException.class,
@@ -23,6 +27,11 @@ class TractorUnitTest {
     LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
     LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
     LicensePlate licensePlate = new LicensePlate("OEC5E12");
+    // valid tractor unit
+    TractorUnit tractorUnit =
+        TractorUnit.reconstitute(
+            UUID.randomUUID(), UUID.randomUUID(), licensePlate, pastDate, pastDate);
+    assertNotNull(tractorUnit);
     // invalid id
     assertThrows(
         IllegalArgumentException.class,
