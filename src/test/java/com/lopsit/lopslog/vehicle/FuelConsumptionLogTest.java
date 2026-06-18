@@ -9,23 +9,29 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class FuelConsumptionLogTest {
+  private static final UUID tractorUnitId = UUID.randomUUID();
+  private static final UUID driverId = UUID.randomUUID();
+  private static final LoadStatus loadStatus = LoadStatus.LOADED;
+  private static final int distanceKm = 100;
+  private static final BigDecimal listersOfFuelConsumed = BigDecimal.TEN;
+  private static final int odometer = 100000;
+  private static final LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
+  private static final LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
 
   @Test
   void create() {
-    LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
-    LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
     // valid fuel consumption log
     FuelConsumptionLog log =
         FuelConsumptionLog.create(
             null,
-            UUID.randomUUID(),
-            UUID.randomUUID(),
+            tractorUnitId,
+            driverId,
             pastDate,
             null,
-            LoadStatus.LOADED,
-            100,
-            BigDecimal.TEN,
-            100000);
+            loadStatus,
+            distanceKm,
+            listersOfFuelConsumed,
+            odometer);
     assertNotNull(log);
     // invalid tractor unit id
     assertThrows(
@@ -34,221 +40,219 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.create(
                 null,
                 null,
-                UUID.randomUUID(),
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000));
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer));
     // invalid driver id
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
+                tractorUnitId,
                 null,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000));
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer));
     // invalid occurred at
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 null,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000));
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 futureDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000));
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer));
     // invalid description
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 "",
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000));
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer));
     // invalid load status
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
                 null,
                 100,
-                BigDecimal.TEN,
-                100000));
+                listersOfFuelConsumed,
+                odometer));
     // invalid distance km
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 null,
-                BigDecimal.TEN,
-                100000));
+                listersOfFuelConsumed,
+                odometer));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 0,
-                BigDecimal.TEN,
-                100000));
+                listersOfFuelConsumed,
+                odometer));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 -100,
-                BigDecimal.TEN,
-                100000));
+                listersOfFuelConsumed,
+                odometer));
     // invalid listers of fuel consumed
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 null,
-                100000));
+                odometer));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 BigDecimal.ZERO,
-                100000));
+                odometer));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 BigDecimal.valueOf(-100),
-                100000));
+                odometer));
     // invalid odometer
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 null));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 0));
     assertThrows(
         IllegalArgumentException.class,
         () ->
             FuelConsumptionLog.create(
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 -100000));
   }
 
   @Test
   void reconstitute() {
-    LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
-    LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
     // valid fuel consumption log
     FuelConsumptionLog log =
         FuelConsumptionLog.reconstitute(
             UUID.randomUUID(),
             null,
-            UUID.randomUUID(),
-            UUID.randomUUID(),
+            tractorUnitId,
+            driverId,
             pastDate,
-            "description",
-            LoadStatus.LOADED,
-            100,
-            BigDecimal.TEN,
-            100000,
+            null,
+            loadStatus,
+            distanceKm,
+            listersOfFuelConsumed,
+            odometer,
             pastDate);
     assertNotNull(log);
     // invalid id
@@ -258,14 +262,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 null,
                 null,
-                null,
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid tractor unit id
     assertThrows(
@@ -275,13 +279,13 @@ class FuelConsumptionLogTest {
                 UUID.randomUUID(),
                 null,
                 null,
-                UUID.randomUUID(),
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid driver id
     assertThrows(
@@ -290,14 +294,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
+                tractorUnitId,
                 null,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid occurred at
     assertThrows(
@@ -306,14 +310,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 null,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     assertThrows(
         IllegalArgumentException.class,
@@ -321,14 +325,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 futureDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid description
     assertThrows(
@@ -337,14 +341,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 "",
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid load status
     assertThrows(
@@ -353,14 +357,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
                 null,
-                100,
-                BigDecimal.TEN,
-                100000,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid distance km
     assertThrows(
@@ -369,14 +373,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 null,
-                BigDecimal.TEN,
-                100000,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     assertThrows(
         IllegalArgumentException.class,
@@ -384,14 +388,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 0,
-                BigDecimal.TEN,
-                100000,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     assertThrows(
         IllegalArgumentException.class,
@@ -399,14 +403,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
+                loadStatus,
                 -100,
-                BigDecimal.TEN,
-                100000,
+                listersOfFuelConsumed,
+                odometer,
                 pastDate));
     // invalid listers of fuel consumed
     assertThrows(
@@ -415,14 +419,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 null,
-                100000,
+                odometer,
                 pastDate));
     assertThrows(
         IllegalArgumentException.class,
@@ -430,14 +434,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 BigDecimal.ZERO,
-                100000,
+                odometer,
                 pastDate));
     assertThrows(
         IllegalArgumentException.class,
@@ -445,14 +449,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
+                loadStatus,
+                distanceKm,
                 BigDecimal.valueOf(-100),
-                100000,
+                odometer,
                 pastDate));
     // invalid odometer
     assertThrows(
@@ -461,13 +465,13 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 null,
                 pastDate));
     assertThrows(
@@ -476,13 +480,13 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 0,
                 pastDate));
     assertThrows(
@@ -491,13 +495,13 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
                 -100000,
                 pastDate));
     // invalid created at
@@ -507,14 +511,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 pastDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 null));
     assertThrows(
         IllegalArgumentException.class,
@@ -522,14 +526,14 @@ class FuelConsumptionLogTest {
             FuelConsumptionLog.reconstitute(
                 UUID.randomUUID(),
                 null,
-                UUID.randomUUID(),
-                UUID.randomUUID(),
+                tractorUnitId,
+                driverId,
                 futureDate,
                 null,
-                LoadStatus.LOADED,
-                100,
-                BigDecimal.TEN,
-                100000,
+                loadStatus,
+                distanceKm,
+                listersOfFuelConsumed,
+                odometer,
                 futureDate));
   }
 }
