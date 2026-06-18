@@ -12,12 +12,12 @@ class TractorUnitTest {
   @Test
   void create() {
     // valid tractor unit
-    TractorUnit tractorUnit = TractorUnit.create(UUID.randomUUID(), new LicensePlate("OEC5E12"));
+    TractorUnit tractorUnit = TractorUnit.create(UUID.randomUUID(), new LicensePlate("JZR4356"));
     assertNotNull(tractorUnit);
     // invalid company id
     assertThrows(
         IllegalArgumentException.class,
-        () -> TractorUnit.create(null, new LicensePlate("OEC5E12")));
+        () -> TractorUnit.create(null, new LicensePlate("JZR4356")));
     // invalid license plate
     assertThrows(IllegalArgumentException.class, () -> TractorUnit.create(UUID.randomUUID(), null));
   }
@@ -26,7 +26,7 @@ class TractorUnitTest {
   void reconstitute() {
     LocalDateTime pastDate = LocalDateTime.now().minusDays(30L);
     LocalDateTime futureDate = LocalDateTime.now().plusDays(30L);
-    LicensePlate licensePlate = new LicensePlate("OEC5E12");
+    LicensePlate licensePlate = new LicensePlate("JZR4356");
     // valid tractor unit
     TractorUnit tractorUnit =
         TractorUnit.reconstitute(
